@@ -1,4 +1,4 @@
-module CASAuthenticatedSpecHelper
+module AuthenticatedSpecHelper
   def login_as_user
     @current_user = mock_model(User, :login => "jsmith")
     User.should_receive(:find_by_login).with(@current_user.login).
