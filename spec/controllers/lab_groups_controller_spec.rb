@@ -1,12 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe LabGroupsController do
-  include CASAuthenticatedSpecHelper
+  include AuthenticatedSpecHelper
 
   before(:each) do
     login_as_staff
-
-    #LabGroup.stub!(:find).and_return([mock_model(LabGroup)])
   end
 
   def mock_lab_group(stubs={})

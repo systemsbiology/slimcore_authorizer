@@ -4,7 +4,7 @@ class LabMembershipsController < ApplicationController
   # GET /lab_memberships
   # GET /lab_memberships.xml
   def index
-    @lab_memberships = @user.lab_memberships.find(:all)
+    @lab_memberships = @user.lab_memberships
 
     respond_to do |format|
       format.html # index.html.erb
@@ -15,7 +15,7 @@ class LabMembershipsController < ApplicationController
   # GET /lab_memberships/new
   # GET /lab_memberships/new.xml
   def new
-    @lab_membership = @user.lab_memberships.new
+    @lab_membership = LabMembership.new(:user_id => @user.id)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -25,13 +25,13 @@ class LabMembershipsController < ApplicationController
 
   # GET /lab_memberships/1/edit
   def edit
-    @lab_membership = @user.lab_memberships.find(params[:id])
+    @lab_membership = LabMembership.find(params[:id])
   end
 
   # POST /lab_memberships
   # POST /lab_memberships.xml
   def create
-    @lab_membership = @user.lab_memberships.new(params[:lab_membership])
+    @lab_membership = LabMembership.new(params[:lab_membership].merge(:user_id => @user.id))
 
     respond_to do |format|
       if @lab_membership.save

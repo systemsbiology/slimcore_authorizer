@@ -85,15 +85,18 @@ Get detailed information about a single user.
 
   def edit
     @user = User.find(params[:id])
+    @user_profile = @user.user_profile
   end
 
   # PUT /users/1
   # PUT /users/1.xml
   def update
     @user = User.find(params[:id])
+    @user_profile = @user.user_profile
 
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+      if @user.load(params[:user]) && @user.save &&
+         @user_profile.update_attributes(params[:user_profile])
         flash[:notice] = 'User was successfully updated.'
         format.html { redirect_to(users_url) }
         format.xml  { head :ok }

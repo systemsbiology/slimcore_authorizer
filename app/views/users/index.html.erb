@@ -1,0 +1,33 @@
+<h2>Listing Users</h2>
+
+<p><%= link_to 'Register a new user', new_registration_path %></p>
+
+<% if @users.size > 0 %>
+  <table class="sortable" id="chip_types">
+    <tr>
+      <th>Name</th>
+      <th>Lab Memberships</th>
+      <% UserProfile.index_columns.each do |c| %>
+        <th><%= c.humanize %></th>
+      <% end %>
+      <th>Edit</th>
+      <th>Destroy</th>
+    </tr>
+    <% @users.each do |user| %>
+      <% profile = user.user_profile %>
+      <tr>
+        <td><%=h user.lastname %>, <%=h user.firstname%></td>
+        <td><%= link_to 'Lab Memberships', user_lab_memberships_path(user) %>
+        <% UserProfile.index_columns.each do |c| %>
+          <td><%=h profile.send(c) %></td>
+        <% end %>
+        <td><%= link_to 'Edit', edit_user_path(user) %></td>
+        <td><%= link_to 'Destroy', user, :confirm => "Are you sure you want to destroy " + 
+                                    "the user #{user.fullname}",
+                        :method => :delete %></td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+    <p>There are currently no users.</p>
+<% end %>
