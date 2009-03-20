@@ -3,6 +3,16 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe "LabGroup" do
   fixtures :lab_groups, :samples, :charge_sets, :projects
 
+  it "should provide the associated lab group profile" do
+    profile = mock("Lab group profile")
+    LabGroupProfile.should_receive(:find_or_create_by_lab_group_id).
+      with(3).
+      and_return(profile)
+    lab_group = LabGroup.new
+    lab_group.should_receive(:id).and_return(3)
+    lab_group.lab_group_profile.should == profile
+  end
+
   it "should provide an accurate destroy warning" do
     expected_warning = "Destroying this lab group will also destroy:\n" + 
                        "3 charge set(s)\n" +

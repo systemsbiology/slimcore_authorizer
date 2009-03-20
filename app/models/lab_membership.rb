@@ -3,6 +3,11 @@ class LabMembership < ActiveResource::Base
   self.user = APP_CONFIG['slimcore_user']
   self.password = APP_CONFIG['slimcore_password'] 
 
-  #belongs_to :lab_group
-  #belongs_to :user
+  def lab_group
+    LabGroup.find(lab_group_id)
+  end
+
+  def user
+    User.find(user_id)
+  end
 end

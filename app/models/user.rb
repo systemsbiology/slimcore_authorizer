@@ -8,6 +8,26 @@ class User < ActiveResource::Base
   #has_many :samples, :foreign_key => "submitted_by_id"
   #belongs_to :naming_scheme, :foreign_key => "current_naming_scheme_id"
 
+  def user_profile
+    UserProfile.find_or_create_by_user_id(self.id)
+  end
+
+  def lab_memberships
+    LabMembership.find(:all, :params => { :user_id => self.id })
+  end
+
+  def self.find_by_login(login)
+    self.find(:all, :params => {:login => login}).first
+  end
+
+  def staff_or_admin?
+    UserProfile.find_by_user_id(id).staff_or_admin?
+  end
+
+  def admin?
+    UserProfile.find_by_user_id(id).admin?
+  end
+
   # Returns the full name of this user.
   def fullname
     full_name
@@ -40,7 +60,11 @@ class User < ActiveResource::Base
       return self.lab_groups
     end
   end  
-  
+ 
+  def lab_groups
+    LabGroup.find(:all, :params => { :user_id => id })
+  end
+
   def accessible_users
     lab_group_ids = get_lab_group_ids
     return User.find(:all, :include => :lab_memberships,

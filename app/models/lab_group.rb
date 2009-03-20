@@ -6,6 +6,10 @@ class LabGroup < ActiveResource::Base
 #  has_many :projects, :dependent => :destroy
 #  has_many :charge_sets, :dependent => :destroy
 
+  def lab_group_profile
+    LabGroupProfile.find_or_create_by_lab_group_id(self.id)
+  end
+
   def destroy_warning
     charge_sets = ChargeSet.find(:all, :conditions => ["lab_group_id = ?", id])
     
