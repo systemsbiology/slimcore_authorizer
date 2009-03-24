@@ -11,6 +11,10 @@ describe LabGroupsController do
     @mock_lab_group ||= mock_model(LabGroup, stubs)
   end
 
+  def mock_lab_group_profile
+    @mock_lab_group_profile ||= mock("LabGroupProfile")
+  end
+
   describe "responding to GET index" do
 
     before(:each) do
@@ -107,6 +111,7 @@ describe LabGroupsController do
 
     it "should expose the requested lab_group as @lab_group" do
       LabGroup.should_receive(:find).with("37").and_return(mock_lab_group)
+      mock_lab_group.should_receive(:lab_group_profile).and_return(mock_lab_group_profile)
       get :edit, :id => "37"
       assigns[:lab_group].should equal(mock_lab_group)
     end
@@ -151,45 +156,88 @@ describe LabGroupsController do
 
   describe "responding to PUT udpate" do
 
+    def do_update
+      put :update, :id => "37", :lab_group => {:these => 'params'}, :lab_group_profile => {:those => 'params'}
+    end
+
     describe "with valid params" do
 
-      it "should update the requested lab_group" do
+      before(:each) do
+        LabGroup.stub!(:find).and_return(mock_lab_group)
+        mock_lab_group.stub!(:load).and_return(true)
+        mock_lab_group.stub!(:save).and_return(true)
+        mock_lab_group.stub!(:lab_group_profile).and_return(mock_lab_group_profile)
+        mock_lab_group_profile.stub!(:update_attributes).and_return(true)
+      end
+
+      it "should find the lab_group" do
         LabGroup.should_receive(:find).with("37").and_return(mock_lab_group)
-        mock_lab_group.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :lab_group => {:these => 'params'}
+        do_update
+      end
+
+      it "should find the lab_group profile" do
+        mock_lab_group.should_receive(:lab_group_profile).and_return(mock_lab_group_profile)
+        do_update
+      end
+
+      it "should load the updates into the lab_group" do
+        mock_lab_group.should_receive(:load).with({'these' => 'params'}).and_return(true)
+        do_update
+      end
+
+      it "should save the lab_group" do
+        mock_lab_group.should_receive(:save).and_return(true)
+        do_update
+      end
+
+      it "should update the lab_group profile" do
+        mock_lab_group_profile.should_receive(:update_attributes).
+          with({'those' => 'params'}).and_return(true)
+        do_update
       end
 
       it "should expose the requested lab_group as @lab_group" do
-        LabGroup.stub!(:find).and_return(mock_lab_group(:update_attributes => true))
-        put :update, :id => "1"
+        do_update
         assigns(:lab_group).should equal(mock_lab_group)
       end
 
+      it "should expose the lab_group_profile as @lab_group_profile" do
+        do_update
+        assigns(:lab_group_profile).should equal(mock_lab_group_profile) 
+      end
+
       it "should redirect to the lab_group" do
-        LabGroup.stub!(:find).and_return(mock_lab_group(:update_attributes => true))
-        put :update, :id => "1"
+        do_update
         response.should redirect_to(lab_groups_url)
       end
 
     end
 
-    describe "with invalid params" do
+    describe "with invalid lab_group params" do
+
+      before(:each) do
+        LabGroup.stub!(:find).and_return(mock_lab_group)
+        mock_lab_group.stub!(:load).and_return(false)
+        mock_lab_group.stub!(:lab_group_profile).and_return(mock_lab_group_profile)
+      end
 
       it "should update the requested lab_group" do
-        LabGroup.should_receive(:find).with("37").and_return(mock_lab_group)
-        mock_lab_group.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :lab_group => {:these => 'params'}
+        mock_lab_group.should_receive(:load).with({'these' => 'params'})
+        do_update
       end
 
       it "should expose the lab_group as @lab_group" do
-        LabGroup.stub!(:find).and_return(mock_lab_group(:update_attributes => false))
-        put :update, :id => "1"
+        do_update
         assigns(:lab_group).should equal(mock_lab_group)
       end
 
+      it "should expose the lab_group_profile as @lab_group_profile" do
+        do_update
+        assigns(:lab_group_profile).should equal(mock_lab_group_profile) 
+      end
+
       it "should re-render the 'edit' template" do
-        LabGroup.stub!(:find).and_return(mock_lab_group(:update_attributes => false))
-        put :update, :id => "1"
+        do_update
         response.should render_template('edit')
       end
 
@@ -200,13 +248,12 @@ describe LabGroupsController do
   describe "responding to DELETE destroy" do
 
     before(:each) do
-      @lab_group = mock_lab_group
-      @lab_group.stub!(:destroy)
-      LabGroup.should_receive(:find).with("37").and_return(@lab_group)
+      mock_lab_group.stub!(:destroy)
+      LabGroup.should_receive(:find).with("37").and_return(mock_lab_group)
     end
 
     it "should destroy the requested lab_group" do
-      @lab_group.should_receive(:destroy)
+      mock_lab_group.should_receive(:destroy)
       delete :destroy, :id => "37"
     end
 

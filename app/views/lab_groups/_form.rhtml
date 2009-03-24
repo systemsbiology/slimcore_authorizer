@@ -4,8 +4,7 @@
 <p><label for="lab_group_name">Name</label><br/>
 <%= text_field 'lab_group', 'name'  %></p>
 
-<p><label for="lab_group_file_folder">File Folder</label><br/>
-<%= text_field 'lab_group', 'file_folder'  %></p>
+<%= render :partial => "lab_group_profiles/form", :locals => {:lab_group_profile => @lab_group_profile} %>
 
 <%= hidden_field 'lab_group', 'lock_version' %>
 <!--[eoform:lab_group]-->

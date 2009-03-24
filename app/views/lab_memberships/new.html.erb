@@ -1,14 +1,15 @@
-<h1>New lab_membership</h1>
+<h1>New Lab Membership</h1>
 
 <%= error_messages_for :lab_membership %>
 
-<% form_for([@user, @lab_membership]) do |f| %>
+<% form_for :lab_membership, :url => lab_memberships_path do |f| %>
   <p>
     <b>Lab Group</b><br />
     <%= f.collection_select :lab_group_id,
                             LabGroup.find(:all, :order => "name ASC"),
                             'id',
                             'name' %>
+    <%= f.hidden_field :user_id %>
   </p>
 
   <p>
@@ -16,4 +17,4 @@
   </p>
 <% end %>
 
-<%= link_to 'Back', user_lab_memberships_path %>
+<%= link_to 'Back', user_lab_memberships_path(@user) %>

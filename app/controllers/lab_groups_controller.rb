@@ -4,7 +4,7 @@ name:: /lab_groups
 This resource can be used to list a summary of all lab_groups, or show details for
 a particular lab_group.<br><br>
 
-A user can have and belong to many lab groups. A lab_group may be associated with any number of
+A lab_group can have and belong to many lab groups. A lab_group may be associated with any number of
 projects.
 =end
 
@@ -76,20 +76,23 @@ Get detailed information about a single lab_group.
 
   def edit
     @lab_group = LabGroup.find(params[:id])
+    @lab_group_profile = @lab_group.lab_group_profile
   end
 
   def update
     @lab_group = LabGroup.find(params[:id])
+    @lab_group_profile = @lab_group.lab_group_profile
 
     begin
-      if @lab_group.update_attributes(params[:lab_group])
+      if @lab_group.load(params[:lab_group]) && @lab_group.save &&
+         @lab_group_profile.update_attributes(params[:lab_group_profile])
         flash[:notice] = 'LabGroup was successfully updated.'
         redirect_to lab_groups_url
       else
         render :action => 'edit'
       end
     rescue ActiveRecord::StaleObjectError
-      flash[:warning] = "Unable to update information. Another user has modified this lab group."
+      flash[:warning] = "Unable to update information. Another lab_group has modified this lab group."
       @lab_group = LabGroup.find(params[:id])
       render :action => 'edit'
     end
@@ -102,8 +105,7 @@ Get detailed information about a single lab_group.
     rescue
       flash[:warning] = "Cannot delete lab group due to association " +
                         "with chip transactions or hybridizations."
-      list
-      render :action => 'index'
+      redirect_to lab_groups_url
     end
   end
 end

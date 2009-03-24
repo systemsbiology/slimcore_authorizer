@@ -1,9 +1,9 @@
 class LabMembershipsController < ApplicationController
-  before_filter :find_user
 
   # GET /lab_memberships
   # GET /lab_memberships.xml
   def index
+    @user = User.find(params[:user_id])
     @lab_memberships = @user.lab_memberships
 
     respond_to do |format|
@@ -15,7 +15,11 @@ class LabMembershipsController < ApplicationController
   # GET /lab_memberships/new
   # GET /lab_memberships/new.xml
   def new
-    @lab_membership = LabMembership.new(:user_id => @user.id)
+    @user = User.find(params[:user_id])
+    @lab_membership = LabMembership.new(
+      :user_id => @user.id,
+      :lab_group_id => nil
+    )
 
     respond_to do |format|
       format.html # new.html.erb
@@ -26,12 +30,14 @@ class LabMembershipsController < ApplicationController
   # GET /lab_memberships/1/edit
   def edit
     @lab_membership = LabMembership.find(params[:id])
+    @user = @lab_membership.user
   end
 
   # POST /lab_memberships
   # POST /lab_memberships.xml
   def create
-    @lab_membership = LabMembership.new(params[:lab_membership].merge(:user_id => @user.id))
+    @lab_membership = LabMembership.new(params[:lab_membership])
+    @user = @lab_membership.user
 
     respond_to do |format|
       if @lab_membership.save
@@ -48,10 +54,11 @@ class LabMembershipsController < ApplicationController
   # PUT /lab_memberships/1
   # PUT /lab_memberships/1.xml
   def update
-    @lab_membership = @user.lab_memberships.find(params[:id])
+    @lab_membership = LabMembership.find(params[:id])
+    @user = @lab_membership.user
 
     respond_to do |format|
-      if @lab_membership.update_attributes(params[:lab_membership])
+      if @lab_membership.load(params[:lab_membership]) && @lab_membership.save
         flash[:notice] = 'LabMembership was successfully updated.'
         format.html { redirect_to( user_lab_memberships_path(@user) ) }
         format.xml  { head :ok }
@@ -65,7 +72,8 @@ class LabMembershipsController < ApplicationController
   # DELETE /lab_memberships/1
   # DELETE /lab_memberships/1.xml
   def destroy
-    @lab_membership = @user.lab_memberships.find(params[:id])
+    @lab_membership = LabMembership.find(params[:id])
+    @user = @lab_membership.user
     @lab_membership.destroy
 
     respond_to do |format|
@@ -74,10 +82,4 @@ class LabMembershipsController < ApplicationController
     end
   end
 
-private
-
-  def find_user
-    @user = User.find(params[:user_id])
-  end
-  
 end
