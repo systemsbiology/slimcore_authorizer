@@ -81,7 +81,7 @@ describe "User" do
       user.admin?.should be_true
     end
 
-    it "should return true if the users' profile indicates they are" do
+    it "should return true if the user's profile indicates they are" do
       profile = mock("UserProfile")
       UserProfile.should_receive(:find_by_user_id).with(3).and_return(profile)
       profile.should_receive(:admin?).and_return(false)
@@ -91,6 +91,18 @@ describe "User" do
       user.admin?.should be_false
     end
 
+  end
+
+  it "should provide a Hash of users keyed by user id" do
+    user_1 = mock_model(User)
+    user_2 = mock_model(User)
+
+    User.should_receive(:find).with(:all).and_return( [user_1,user_2] ) 
+
+    User.all_by_id.should == {
+      user_1.id => user_1,
+      user_2.id => user_2
+    }
   end
 
   it "should provide a hash of summary attributes" do

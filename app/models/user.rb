@@ -81,6 +81,17 @@ class User < ActiveResource::Base
     )
   end
 
+  def self.all_by_id
+    user_array = User.find(:all)
+
+    user_hash = Hash.new
+    user_array.each do |user|
+      user_hash[user.id] = user
+    end
+
+    return user_hash
+  end
+
   ####################################################
   # API
   ####################################################
