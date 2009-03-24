@@ -1,0 +1,16 @@
+Description:
+    Adds the necessary models, specs and migrations and configurations to your app so that it 
+    can use the slimcore_authorizer engine.
+
+Example:
+    ./script/generate slimcore_authorizer
+
+    This will create:
+        app/models/user_profile.rb
+        app/models/lab_group_profile.rb
+        config/application.yml
+        config/initializers/1-load_application_config.rb
+        config/initializers/cas_server.rb
+        db/migrations/TIMESTAMP_add_slimcore_authorizer.rb
+        spec/models/user_profile_spec.rb
+        spec/models/lab_group_profile_spec.rb        
