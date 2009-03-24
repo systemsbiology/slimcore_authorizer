@@ -19,8 +19,8 @@
               <td><%=h profile.send(c) %></td>
             <% end %>
 	    <td><%= link_to 'Edit', :action => 'edit', :id => lab_group %></td>
-	    <td><%= link_to 'Destroy', { :action => 'destroy', :id => lab_group }, 
-	                    :confirm => profile.destroy_warning %></td>
+            <td><%= link_to 'Destroy', lab_group, :confirm => profile.destroy_warning,
+                    :method => :delete %></td>
 	  </tr>
 	<% end %>
 	</table>
