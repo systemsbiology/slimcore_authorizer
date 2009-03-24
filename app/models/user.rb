@@ -84,6 +84,7 @@ class User < ActiveResource::Base
   ####################################################
   # API
   ####################################################
+  
   def summary_hash
     return {
       :id => id,
@@ -103,7 +104,13 @@ class User < ActiveResource::Base
       :updated_at => updated_at,
       :lab_group_uris => lab_group_ids.sort.
         collect {|x| "#{SiteConfig.site_url}/lab_groups/#{x}" }
-    }
+    }.merge(user_profile.detail_hash)
   end
 
+private
+
+  def lab_group_ids
+    LabMembership.find(:all, :conditions => {:user_id => self.id}).
+      collect {|x| x.lab_group_id}
+  end
 end

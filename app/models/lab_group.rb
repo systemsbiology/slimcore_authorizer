@@ -3,21 +3,20 @@ class LabGroup < ActiveResource::Base
   self.user = APP_CONFIG['slimcore_user']
   self.password = APP_CONFIG['slimcore_password'] 
 
-#  has_many :projects, :dependent => :destroy
-#  has_many :charge_sets, :dependent => :destroy
-
   def lab_group_profile
     LabGroupProfile.find_or_create_by_lab_group_id(self.id)
   end
 
-  def destroy_warning
-    charge_sets = ChargeSet.find(:all, :conditions => ["lab_group_id = ?", id])
-    
-    return "Destroying this lab group will also destroy:\n" + 
-           charge_sets.size.to_s + " charge set(s)\n" +
-           projects.size.to_s + " project(s)\n" +
-           "Are you sure you want to destroy it?"
-  end
+  # destroy the associated lab group profile, which is responsible
+  # for destroying any application-specific associated records
+#  def destroy
+#    self.lab_group_profile.destroy
+#    super(destroy)
+#  end
+
+  ####################################################
+  # API
+  ####################################################
 
   def summary_hash
     return {
@@ -32,12 +31,16 @@ class LabGroup < ActiveResource::Base
     return {
       :id => id,
       :name => name,
-      :file_folder => file_folder,
       :updated_at => updated_at,
       :user_uris => user_ids.sort.
         collect {|x| "#{SiteConfig.site_url}/users/#{x}" },
-      :project_uris => project_ids.sort.
-        collect {|x| "#{SiteConfig.site_url}/projects/#{x}" }
-    }
+    }.merge(lab_group_profile.detail_hash)
+  end
+
+private
+
+  def user_ids
+    LabMembership.find(:all, :conditions => {:lab_group_id => self.id}).
+      collect {|x| x.user_id}
   end
 end

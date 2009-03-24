@@ -94,7 +94,13 @@ describe "User" do
   end
 
   it "should provide a hash of summary attributes" do
-    user = create_user(:login => "jsmith")
+    SiteConfig.should_receive(:site_url).any_number_of_times.
+      and_return("http://example.com")
+
+    user = User.new(
+      :login => "jsmith",
+      :updated_at => DateTime.now
+    )
 
     user.summary_hash.should == {
       :id => user.id,
@@ -105,16 +111,33 @@ describe "User" do
   end
 
   it "should provide a hash of detailed attributes" do
-    lab_group_1 = create_lab_group
-    lab_group_2 = create_lab_group
+    SiteConfig.should_receive(:site_url).any_number_of_times.
+      and_return("http://example.com")
 
-    user = create_user(
+    lab_group_1 = mock_model(LabGroup)
+    lab_group_2 = mock_model(LabGroup)
+
+    user = User.new(
       :login => "jsmith",
       :email => "jsmith@example.com",
       :firstname => "Joe",
       :lastname => "Smith",
-      :lab_groups => [lab_group_1, lab_group_2]
+      :updated_at => DateTime.now
     )
+    user.stub!(:lab_groups).and_return([lab_group_1, lab_group_2])
+
+    lab_group_1.stub!(:users).and_return([user])
+    lab_group_2.stub!(:users).and_return([user])
+
+    lab_membership_1 = LabMembership.new(:lab_group_id => lab_group_1.id, :user_id => user.id)
+    lab_membership_2 = LabMembership.new(:lab_group_id => lab_group_2.id, :user_id => user.id)
+
+    LabMembership.should_receive(:find).
+      with(:all, :conditions => {:user_id => user.id}).
+      and_return([lab_membership_1, lab_membership_2])
+
+    profile = mock("Profile", :detail_hash => {:a => "b", :c => "d"})
+    user.should_receive(:user_profile).and_return(profile)
 
     user.detail_hash.should == {
       :id => user.id,
@@ -124,7 +147,9 @@ describe "User" do
       :lastname => "Smith",
       :updated_at => user.updated_at,
       :lab_group_uris => ["http://example.com/lab_groups/#{lab_group_1.id}",
-                          "http://example.com/lab_groups/#{lab_group_2.id}"]
+                          "http://example.com/lab_groups/#{lab_group_2.id}"],
+      :a => "b",
+      :c => "d"
     }
   end
 
