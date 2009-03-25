@@ -23,7 +23,7 @@ class LabGroup < ActiveResource::Base
       :id => id,
       :name => name,
       :updated_at => updated_at,
-      :uri => "#{SiteConfig.site_url}/lab_groups/#{id}"
+      :uri => "#{APP_CONFIG['site_url']}/lab_groups/#{id}"
     }
   end
 
@@ -33,7 +33,7 @@ class LabGroup < ActiveResource::Base
       :name => name,
       :updated_at => updated_at,
       :user_uris => user_ids.sort.
-        collect {|x| "#{SiteConfig.site_url}/users/#{x}" },
+        collect {|x| "#{APP_CONFIG['site_url']}/users/#{x}" },
     }.merge(lab_group_profile.detail_hash)
   end
 

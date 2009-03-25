@@ -49,7 +49,7 @@ describe "User" do
     
     it "should return false if the user's profile indicates they're not" do
       profile = mock("UserProfile")
-      UserProfile.should_receive(:find_by_user_id).with(3).and_return(profile)
+      UserProfile.should_receive(:find_or_create_by_user_id).with(3).and_return(profile)
       profile.should_receive(:staff_or_admin?).and_return(true)
       user = mock_model(User)
       user = User.new
@@ -59,7 +59,7 @@ describe "User" do
 
     it "should return true if the users' profile indicates they are" do
       profile = mock("UserProfile")
-      UserProfile.should_receive(:find_by_user_id).with(3).and_return(profile)
+      UserProfile.should_receive(:find_or_create_by_user_id).with(3).and_return(profile)
       profile.should_receive(:staff_or_admin?).and_return(false)
       user = mock_model(User)
       user = User.new
@@ -73,7 +73,7 @@ describe "User" do
     
     it "should return false if the user's profile indicates they're not" do
       profile = mock("UserProfile")
-      UserProfile.should_receive(:find_by_user_id).with(3).and_return(profile)
+      UserProfile.should_receive(:find_or_create_by_user_id).with(3).and_return(profile)
       profile.should_receive(:admin?).and_return(true)
       user = mock_model(User)
       user = User.new
@@ -83,7 +83,7 @@ describe "User" do
 
     it "should return true if the user's profile indicates they are" do
       profile = mock("UserProfile")
-      UserProfile.should_receive(:find_by_user_id).with(3).and_return(profile)
+      UserProfile.should_receive(:find_or_create_by_user_id).with(3).and_return(profile)
       profile.should_receive(:admin?).and_return(false)
       user = mock_model(User)
       user = User.new
@@ -106,9 +106,6 @@ describe "User" do
   end
 
   it "should provide a hash of summary attributes" do
-    SiteConfig.should_receive(:site_url).any_number_of_times.
-      and_return("http://example.com")
-
     user = User.new(
       :login => "jsmith",
       :updated_at => DateTime.now
@@ -123,9 +120,6 @@ describe "User" do
   end
 
   it "should provide a hash of detailed attributes" do
-    SiteConfig.should_receive(:site_url).any_number_of_times.
-      and_return("http://example.com")
-
     lab_group_1 = mock_model(LabGroup)
     lab_group_2 = mock_model(LabGroup)
 

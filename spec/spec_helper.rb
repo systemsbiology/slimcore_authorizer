@@ -48,6 +48,7 @@ Spec::Runner.configure do |config|
 end
 
 APP_CONFIG = {
+  'site_url' => "http://example.com",
   'slimcore_site' => "http://localhost:3030",
   'slimcore_user' => "test",
   'slimcore_password' => "test"

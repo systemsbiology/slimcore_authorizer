@@ -22,9 +22,6 @@ describe "LabGroup" do
 #  end
 
   it "should provide a hash of summary attributes" do
-    SiteConfig.should_receive(:site_url).any_number_of_times.
-      and_return("http://example.com")
-
     lab_group = LabGroup.new(
       :name => "Fungus Group",
       :updated_at => DateTime.now
@@ -39,9 +36,6 @@ describe "LabGroup" do
   end
 
   it "should provide a hash of detailed attributes" do
-    SiteConfig.should_receive(:site_url).any_number_of_times.
-      and_return("http://example.com")
-
     lab_group = LabGroup.new(
       :name => "Fungus Group",
       :updated_at => DateTime.now

@@ -21,11 +21,11 @@ class User < ActiveResource::Base
   end
 
   def staff_or_admin?
-    UserProfile.find_by_user_id(id).staff_or_admin?
+    UserProfile.find_or_create_by_user_id(id).staff_or_admin?
   end
 
   def admin?
-    UserProfile.find_by_user_id(id).admin?
+    UserProfile.find_or_create_by_user_id(id).admin?
   end
 
   # Returns the full name of this user.
@@ -101,7 +101,7 @@ class User < ActiveResource::Base
       :id => id,
       :login => login,
       :updated_at => updated_at,
-      :uri => "#{SiteConfig.site_url}/users/#{id}"
+      :uri => "#{APP_CONFIG['site_url']}/users/#{id}"
     }
   end
 
@@ -114,7 +114,7 @@ class User < ActiveResource::Base
       :lastname => lastname,
       :updated_at => updated_at,
       :lab_group_uris => lab_group_ids.sort.
-        collect {|x| "#{SiteConfig.site_url}/lab_groups/#{x}" }
+        collect {|x| "#{APP_CONFIG['site_url']}/lab_groups/#{x}" }
     }.merge(user_profile.detail_hash)
   end
 
