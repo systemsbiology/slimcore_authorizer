@@ -1,0 +1,31 @@
+=SLIMcore Authorizer
+
+==Quickstart
+
+In your Rails 2.3.2 app, run:
+
+  script/plugin install http://slimarray.systemsbiology.net/svn/engines/slimcore_authorizer/trunk
+  script/generate slimcore_authorizer .
+  rake db:migrate
+
+Then add this to your app/controllers/application_controller.rb:
+
+  include AuthenticatedSystem 
+  include Authorization
+
+Edit config/application.yml so that it correctly specifies the addresses of SLIMcore and your 
+RubyCAS-server.
+
+Run:
+
+  script/server
+
+And you should be able to navigate to http://localhost:3000/users and 
+http://localhost:3000/lab_groups to manage users and lab groups that are stored in SLIMcore.
+
+You'll probably also want to add the following link wherever it would be appropriate to have 
+a link to log out:
+
+  <p><%= link_to "logout", :controller => 'sessions', :action => 'destroy' %></p>
+
+Copyright (c) 2009 Institute for Systems Biology
