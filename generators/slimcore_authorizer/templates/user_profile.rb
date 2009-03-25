@@ -9,6 +9,13 @@ class UserProfile < ActiveRecord::Base
   class << self; attr_accessor :index_columns end
   @index_columns = ['role']
 
+  def before_save
+    # make the first user to log in the admin
+    if(UserProfile.count == 0)
+      self.role = "admin"
+    end
+  end
+
   ###############################################################################################
   # Authorization:
   #
