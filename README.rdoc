@@ -26,6 +26,6 @@ http://localhost:3000/lab_groups to manage users and lab groups that are stored 
 You'll probably also want to add the following link wherever it would be appropriate to have 
 a link to log out:
 
-  <p><%= link_to "logout", :controller => 'sessions', :action => 'destroy' %></p>
+  <%= link_to "logout", :controller => 'sessions', :action => 'destroy' %>
 
 Copyright (c) 2009 Institute for Systems Biology
