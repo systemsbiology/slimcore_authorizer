@@ -61,7 +61,10 @@ Get detailed information about a single lab_group.
   end
 
   def new
-    @lab_group = LabGroup.new
+    @lab_group = LabGroup.new(
+      :name => "",
+      :lock_version => 0
+    )
   end
 
   def create
