@@ -1,4 +1,5 @@
 class LabMembershipsController < ApplicationController
+  include AuthenticatedSystem
 
   # GET /lab_memberships
   # GET /lab_memberships.xml
