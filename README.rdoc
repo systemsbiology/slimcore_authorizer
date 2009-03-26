@@ -20,7 +20,7 @@ Then add this to your config/environment.rb as directed by the Engines instructi
 
 Install SLIMcore Authorizer:
 
-  script/plugin install http://slimarray.systemsbiology.net/svn/engines/slimcore_authorizer/trunk
+  script/plugin install git://github.com/bmarzolf/slimcore_authorizer.git
   script/generate slimcore_authorizer .
   rake db:migrate
 
