@@ -1,8 +1,24 @@
 =SLIMcore Authorizer
 
+This plugin/engine provides:
+
+1. Authentication through RubyCAS-server
+2. Very simple authorization by role
+3. Management of shared lab groups and users in SLIMcore
+
+Note: This was built for Rails 2.3.2 apps, so other versions may require some tinkering.
+
 ==Quickstart
 
-In your Rails 2.3.2 app, run:
+Install Rails Engines, by running this in your app root:
+
+  script/plugin install git://github.com/lazyatom/engines.git
+
+Then add this to your config/environment.rb as directed by the Engines instructions:
+
+  require File.join(File.dirname(__FILE__), '../vendor/plugins/engines/boot')
+
+Install SLIMcore Authorizer:
 
   script/plugin install http://slimarray.systemsbiology.net/svn/engines/slimcore_authorizer/trunk
   script/generate slimcore_authorizer .
@@ -23,9 +39,36 @@ Run:
 And you should be able to navigate to http://localhost:3000/users and 
 http://localhost:3000/lab_groups to manage users and lab groups that are stored in SLIMcore.
 
-You'll probably also want to add the following link wherever it would be appropriate to have 
-a link to log out:
+==Using Authentication and Authorization
+
+Authenticate on your own controllers by adding:
+
+  before_filter :login_required
+
+Check authorization in controllers using:
+
+  before_filter :staff_or_admin_required  # staff or admin access
+
+or
+
+  before_filter :admin_required  # admin-only
+
+==User and Lab Group Interfaces
+
+Link to the user and lab group management interfaces from your app like:
+
+  <%= link_to 'Users', users_path %>
+  <%= link_to 'Lab Groups', lab_groups_path %>
+
+==Logout
+
+Add the following link wherever it would be appropriate to have a link to log out:
 
   <%= link_to "logout", :controller => 'sessions', :action => 'destroy' %>
+
+==User Profiles and Lab Group Profiles
+
+In order to allow application-specific user and lab group data, SLIMcore Authorizer adds 
+two models to your application, UserProfile and LabGroupProfile. This plugin/engine 
 
 Copyright (c) 2009 Institute for Systems Biology
