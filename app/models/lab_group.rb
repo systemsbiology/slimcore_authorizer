@@ -7,6 +7,10 @@ class LabGroup < ActiveResource::Base
     LabGroupProfile.find_or_create_by_lab_group_id(self.id)
   end
 
+  def self.find_by_name(name)
+    self.find(:all, :params => {:name => name}).first
+  end
+
   # destroy the associated lab group profile, which is responsible
   # for destroying any application-specific associated records
 #  def destroy

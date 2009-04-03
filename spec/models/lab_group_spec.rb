@@ -20,6 +20,16 @@ describe "LabGroup" do
 #    profile.should_receive(:destroy)
 #    lab_group.destroy
 #  end
+  #
+  it "should find a lab group given its name" do
+    lab_group = mock_model(LabGroup)
+    LabGroup.should_receive(:find).with(
+      :all,
+      :params => { :name => 'Yeast Group' }
+    ).and_return([lab_group])
+    
+    LabGroup.find_by_name("Yeast Group").should == lab_group
+  end
 
   it "should provide a hash of summary attributes" do
     lab_group = LabGroup.new(
