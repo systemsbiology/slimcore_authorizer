@@ -24,6 +24,20 @@ class SlimcoreAuthorizerGenerator < Rails::Generator::NamedBase
       m.directory "app/views/lab_group_profiles"
       m.file "user_profiles/_form.html.erb", "app/views/user_profiles/_form.html.erb"
       m.file "lab_group_profiles/_form.html.erb", "app/views/lab_group_profiles/_form.html.erb"
+
+      # assets for tinytable JS sorting/pagination
+      m.file "tinytable.css", "public/stylesheets/tinytable.css"
+      m.file "tinytable-packed.js", "public/javascripts/tinytable-packed.js"
+      m.file "asc.gif", "public/images/asc.gif"
+      m.file "bg.gif", "public/images/bg.gif"
+      m.file "desc.gif", "public/images/desc.gif"
+      m.file "first.gif", "public/images/first.gif"
+      m.file "header-bg.gif", "public/images/header-bg.gif"
+      m.file "header-selected-bg.gif", "public/images/header-selected-bg.gif"
+      m.file "last.gif", "public/images/last.gif"
+      m.file "next.gif", "public/images/next.gif"
+      m.file "previous.gif", "public/images/previous.gif"
+      m.file "sort.gif", "public/images/sort.gif"
     end
   end
 end

@@ -8,9 +8,23 @@ Example:
     This will create:
         app/models/user_profile.rb
         app/models/lab_group_profile.rb
+	app/views/user_profiles/_form.html.erb
+	app/views/lab_group_profiles/_form.html.erb
         config/application.yml
         config/initializers/1-load_application_config.rb
         config/initializers/cas_server.rb
         db/migrations/TIMESTAMP_add_slimcore_authorizer.rb
+	public/stylesheets/tinytable.css
+	public/javascripts/tinytable-packed.js
+	public/images/asc.gif
+	public/images/bg.gif
+	public/images/desc.gif
+	public/images/first.gif
+	public/images/header-bg.gif
+	public/images/header-selected-bg.gif
+	public/images/last.gif
+	public/images/next.gif
+	public/images/previous.gif
+	public/images/sort.gif
         spec/models/user_profile_spec.rb
         spec/models/lab_group_profile_spec.rb        

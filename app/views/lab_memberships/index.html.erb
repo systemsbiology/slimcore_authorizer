@@ -1,12 +1,15 @@
 <h1>Listing Lab Memberships for <%=h @user.fullname %></h1>
 
-<table class="sortable">
-  <tr>
-    <td>Lab Group</td>
-    <td>Edit</td>
-    <td>Destroy</td>
-  </tr>
+<p><%= link_to 'New lab_membership', new_user_lab_membership_path %></p>
 
+<table id="table" class="sortable" cellpadding="0" cellspacing="0" border="0">
+  <thead>
+    <tr>
+      <th><h3>Lab Group</h3></th>
+      <th class="nosort"><h3>Edit</h3></th>
+      <th class="nosort"><h3>Destroy</h3></th>
+    </tr>
+  </thead>
 <% for lab_membership in @lab_memberships %>
   <tr>
     <td><%=h lab_membership.lab_group.name %></td>
@@ -17,6 +20,4 @@
 <% end %>
 </table>
 
-<br />
-
-<%= link_to 'New lab_membership', new_user_lab_membership_path %>
+<%= render :partial => 'shared/tinytable', :locals => {:sort_column => 0} %>

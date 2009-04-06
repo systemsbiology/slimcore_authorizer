@@ -1,16 +1,19 @@
 <h2>Listing Lab Groups</h2>
 
+<p><%= link_to 'New lab_group', :action => 'new' %></p>
+
 <% if @lab_groups.size > 0 %>
-	<table class="sortable" id="lab_groups">
-          <tr>
-            <th>Name</th>
-	  <% LabGroupProfile.index_columns.each do |c| %>
-	    <th><%= c.humanize %></th>
-	  <% end %>
-	    <th>Edit</th>
-	    <th>Destroy</th>
-	  </tr>
-	  
+        <table id="table" class="sortable" cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr>
+              <th><h3>Name</h3></th>
+            <% LabGroupProfile.index_columns.each do |c| %>
+              <th><h3><%= c.humanize %></h3></th>
+            <% end %>
+              <th class="nosort"><h3>Edit</h3></th>
+              <th class="nosort"><h3>Destroy</h3></th>
+            </tr>
+          </thead>
 	<% for lab_group in @lab_groups %>
           <% profile = lab_group.lab_group_profile %>
           <tr>
@@ -24,8 +27,9 @@
 	  </tr>
 	<% end %>
 	</table>
+
+
+        <%= render :partial => 'shared/tinytable', :locals => {:sort_column => 0} %>
 <% else %>
     <p>There are currently no lab groups.</p>
 <% end %>
-
-<%= link_to 'New lab_group', :action => 'new' %>
