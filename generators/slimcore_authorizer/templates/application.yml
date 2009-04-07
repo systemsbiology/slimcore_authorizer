@@ -5,6 +5,7 @@ development:
   slimcore_password: test
   api_user: slimbot
   api_password: test
+  skip_authentication: false
 
 test:
   rubycas_server: http://localhost:3020
@@ -13,6 +14,7 @@ test:
   slimcore_password: test
   api_user: slimbot
   api_password: test
+  skip_authentication: true
 
 production:
   rubycas_server: http://localhost:3020
@@ -21,3 +23,4 @@ production:
   slimcore_password: test
   api_user: slimbot
   api_password: test
+  skip_authentication: false
