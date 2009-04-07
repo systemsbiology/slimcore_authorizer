@@ -104,7 +104,9 @@ module AuthenticatedSystem
     # Called from #current_user.  Now, attempt to login by basic authentication information.
     def login_from_basic_auth
       authenticate_with_http_basic do |username, password|
-        self.current_user = User.authenticate(username, password)
+        if( username == APP_CONFIG['api_user'] && password == APP_CONFIG['api_password'] )
+          self.current_user = User.find_by_login(username)
+        end
       end
     end
 
