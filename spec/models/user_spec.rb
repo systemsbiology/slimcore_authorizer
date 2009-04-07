@@ -32,6 +32,32 @@ describe "User" do
     User.find_by_login("jsmith").should == user
   end
 
+  describe "finding or creating a user by login" do
+
+    it "should find a user if they already exist" do
+      user = mock_model(User)
+      User.should_receive(:find).with(
+        :all,
+        :params => { :login => 'jsmith' }
+      ).and_return([user])
+      
+      User.find_or_create_by_login("jsmith").should == user
+    end
+
+    it "should create a new user if one doesn't exist" do
+      user = mock_model(User)
+      User.should_receive(:find).with(
+        :all,
+        :params => { :login => 'jsmith' }
+      ).and_return([])
+      User.should_receive(:create).with(:login => "jsmith").
+        and_return(user)
+      
+      User.find_or_create_by_login("jsmith").should == user
+    end
+
+  end
+
   it "should provide the user's lab groups" do
     user = User.new #mock_model(User)
     user.should_receive(:id).and_return(3)

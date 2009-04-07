@@ -20,6 +20,10 @@ class User < ActiveResource::Base
     self.find(:all, :params => {:login => login}).first
   end
 
+  def self.find_or_create_by_login(login)
+    self.find_by_login(login) || User.create(:login => login)
+  end
+
   def staff_or_admin?
     UserProfile.find_or_create_by_user_id(id).staff_or_admin?
   end
