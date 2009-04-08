@@ -7,6 +7,7 @@
     <thead>
       <tr>
         <th><h3>Name</h3></th>
+        <th><h3>Login</h3></th>
         <th><h3>Lab Memberships</h3></th>
         <% UserProfile.index_columns.each do |c| %>
           <th><h3><%= c.humanize %></h3></th>
@@ -19,6 +20,7 @@
       <% profile = user.user_profile %>
       <tr>
         <td><%=h user.lastname %>, <%=h user.firstname%></td>
+        <td><%=h user.login %></td>
         <td><%= link_to 'Lab Memberships', user_lab_memberships_path(user) %>
         <% UserProfile.index_columns.each do |c| %>
           <td><%=h profile.send(c) %></td>
