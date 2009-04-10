@@ -28,16 +28,16 @@ class SlimcoreAuthorizerGenerator < Rails::Generator::NamedBase
       # assets for tinytable JS sorting/pagination
       m.file "tinytable.css", "public/stylesheets/tinytable.css"
       m.file "tinytable-packed.js", "public/javascripts/tinytable-packed.js"
-      m.file "asc.gif", "public/images/asc.gif"
-      m.file "bg.gif", "public/images/bg.gif"
-      m.file "desc.gif", "public/images/desc.gif"
-      m.file "first.gif", "public/images/first.gif"
-      m.file "header-bg.gif", "public/images/header-bg.gif"
-      m.file "header-selected-bg.gif", "public/images/header-selected-bg.gif"
-      m.file "last.gif", "public/images/last.gif"
-      m.file "next.gif", "public/images/next.gif"
-      m.file "previous.gif", "public/images/previous.gif"
-      m.file "sort.gif", "public/images/sort.gif"
+      m.file "images/asc.gif", "public/images/asc.gif"
+      m.file "images/bg.gif", "public/images/bg.gif"
+      m.file "images/desc.gif", "public/images/desc.gif"
+      m.file "images/first.gif", "public/images/first.gif"
+      m.file "images/header-bg.gif", "public/images/header-bg.gif"
+      m.file "images/header-selected-bg.gif", "public/images/header-selected-bg.gif"
+      m.file "images/last.gif", "public/images/last.gif"
+      m.file "images/next.gif", "public/images/next.gif"
+      m.file "images/previous.gif", "public/images/previous.gif"
+      m.file "images/sort.gif", "public/images/sort.gif"
     end
   end
 end
