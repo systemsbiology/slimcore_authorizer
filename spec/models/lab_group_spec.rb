@@ -31,6 +31,15 @@ describe "LabGroup" do
     LabGroup.find_by_name("Yeast Group").should == lab_group
   end
 
+  it "should return nil if finding by name with a nil name parameter" do
+    LabGroup.should_receive(:find).with(
+      :all,
+      :params => { :name => nil }
+    ).and_return([])
+    
+    LabGroup.find_by_name(nil).should == nil
+  end
+
   it "should provide a hash of summary attributes" do
     lab_group = LabGroup.new(
       :name => "Fungus Group",
