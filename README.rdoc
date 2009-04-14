@@ -32,6 +32,12 @@ Then add this to your app/controllers/application_controller.rb:
 Edit config/application.yml so that it correctly specifies the addresses of SLIMcore and your 
 RubyCAS-server.
 
+Edit your application layout (typically app/views/layout/application.html.erb) to include the 
+following in the <head></head> section:
+
+  <%= stylesheet_link_tag 'tinytable.css' %>
+  <%= javascript_include_tag 'tinytable-packed' %>
+
 Run:
 
   script/server
