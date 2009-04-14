@@ -1,0 +1,43 @@
+<div id="controls">
+  <div id="perpage">
+    <select onchange="sorter.size(this.value)">
+      <option value="5">5</option>
+      <option value="10">10</option>
+      <option value="20" selected="selected">20</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+    </select>
+    <span>Entries Per Page</span>
+    </div>
+      <div id="navigation">
+        <%= image_tag("first.gif", :width => "16", :height => "16", :alt => "First Page", :onclick => "sorter.move(-1,true)") %>
+        <%= image_tag("previous.gif", :width => "16", :height => "16", :alt => "Previous Page", :onclick => "sorter.move(-1)") %>
+        <%= image_tag("next.gif", :width => "16", :height => "16", :alt => "Next Page", :onclick => "sorter.move(1)") %>
+        <%= image_tag("last.gif", :width => "16", :height => "16", :alt => "Last Page", :onclick => "sorter.move(1,true)") %>
+    </div>
+  <div id="text">Displaying Page <span id="currentpage"></span> of <span id="pagelimit"></span></div>
+</div>
+
+
+<br>
+
+<script type="text/javascript">
+  <% if(sort_column)
+       sort_param = ", #{sort_column}"
+     else
+       sort_param = ""
+     end %>
+
+  var sorter = new TINY.table.sorter("sorter");
+	sorter.head = "head";
+	sorter.asc = "asc";
+	sorter.desc = "desc";
+	sorter.even = "evenrow";
+	sorter.odd = "oddrow";
+	sorter.evensel = "evenselected";
+	sorter.oddsel = "oddselected";
+	sorter.paginate = true;
+	sorter.currentid = "currentpage";
+	sorter.limitid = "pagelimit";
+        sorter.init("table" <%= sort_param %>);
+</script>
