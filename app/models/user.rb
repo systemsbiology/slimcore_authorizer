@@ -56,8 +56,8 @@ class User < ActiveResource::Base
   end
   
   def accessible_lab_groups
-    # Administrators and staff can see all projects, otherwise users
-    # are restricted to seeing only projects for lab groups they belong to
+    # Administrators and staff can see all lab groups, otherwise users
+    # are restricted to seeing only lab groups they belong to
     if(self.staff_or_admin?)
       return LabGroup.find(:all, :order => "name ASC")
     else
@@ -77,14 +77,6 @@ class User < ActiveResource::Base
     )    
   end
   
-  def accessible_projects
-    lab_group_ids = get_lab_group_ids
-    return Project.find(:all,
-      :conditions => ["lab_group_id IN (?)", lab_group_ids],
-      :order => "name ASC"
-    )
-  end
-
   def self.all_by_id
     user_array = User.find(:all)
 

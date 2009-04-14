@@ -4,8 +4,7 @@ name:: /lab_groups
 This resource can be used to list a summary of all lab_groups, or show details for
 a particular lab_group.<br><br>
 
-A lab_group can have and belong to many lab groups. A lab_group may be associated with any number of
-projects.
+A lab_group can have and belong to users.
 =end
 
 class LabGroupsController < ApplicationController
