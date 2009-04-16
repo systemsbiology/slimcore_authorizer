@@ -68,7 +68,13 @@ Get detailed information about a single lab_group.
 
   def create
     @lab_group = LabGroup.new(params[:lab_group])
-    if @lab_group.save
+    @lab_group_profile = LabGroupProfile.new(params[:lab_group_profile])
+
+    if @lab_group.valid?
+      @lab_group.save
+      @lab_group_profile.lab_group_id = @lab_group.id
+      @lab_group_profile.save
+
       flash[:notice] = 'LabGroup was successfully created.'
       redirect_to lab_groups_url
     else

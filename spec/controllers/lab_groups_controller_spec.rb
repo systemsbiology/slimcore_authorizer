@@ -124,7 +124,8 @@ describe LabGroupsController do
 
       it "should expose a newly created lab_group as @lab_group" do
         LabGroup.should_receive(:new).with({'these' => 'params'}).and_return(mock_lab_group(:save => true))
-        post :create, :lab_group => {:these => 'params'}
+        LabGroupProfile.should_receive(:new).with({'those' => 'params'}).and_return(mock_lab_group(:save => true))
+        post :create, :lab_group => {:these => 'params'}, :lab_group_profile => {:those => 'params'}
         assigns(:lab_group).should equal(mock_lab_group)
       end
 
