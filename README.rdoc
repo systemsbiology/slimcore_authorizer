@@ -6,6 +6,11 @@ This plugin/engine provides:
 2. Very simple authorization by role
 3. Management of shared lab groups and users in SLIMcore
 
+A less complex alternative to SLIMcore Authorizer is the SLIMsolo Authorizer 
+(http://github.com/bmarzolf/slimsolo_authorizer), which handles authentication and user and
+lab group storage within the parent application itself, but does not have the single sign-on 
+and shared users/lab groups between applications.
+
 Note: This was built for Rails 2.3.2 apps, so other versions may require some tinkering.
 
 ==Quickstart
@@ -74,7 +79,8 @@ Add the following link wherever it would be appropriate to have a link to log ou
 
 ==User Profiles and Lab Group Profiles
 
-In order to allow application-specific user and lab group data, SLIMcore Authorizer adds 
-two models to your application, UserProfile and LabGroupProfile. This plugin/engine 
+In order to allow application-specific user and lab group data, SLIMsolo Authorizer adds 
+two models to your application, UserProfile and LabGroupProfile. Each UserProfile and 
+LabGroupProfile references a User or LabGroup, respectively.
 
 Copyright (c) 2009 Institute for Systems Biology
