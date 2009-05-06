@@ -82,4 +82,17 @@ describe "LabGroup" do
       :c => "d"
     }
   end
+
+  it "should provide a Hash of lab groups keyed by lab group id" do
+    lab_group_1 = mock_model(LabGroup)
+    lab_group_2 = mock_model(LabGroup)
+
+    LabGroup.should_receive(:find).with(:all).and_return( [lab_group_1,lab_group_2] ) 
+
+    LabGroup.all_by_id.should == {
+      lab_group_1.id => lab_group_1,
+      lab_group_2.id => lab_group_2
+    }
+  end
+
 end
