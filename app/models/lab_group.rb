@@ -18,6 +18,17 @@ class LabGroup < ActiveResource::Base
 #    super(destroy)
 #  end
 
+  def self.all_by_id
+    lab_group_array = LabGroup.find(:all)
+
+    lab_group_hash = Hash.new
+    lab_group_array.each do |lab_group|
+      lab_group_hash[lab_group.id] = lab_group
+    end
+
+    return lab_group_hash
+  end
+
   ####################################################
   # API
   ####################################################
