@@ -119,6 +119,30 @@ describe "User" do
 
   end
 
+  describe "checking if the user is a manager" do
+    
+    it "should return false if the user's profile indicates they're not" do
+      profile = mock("UserProfile")
+      UserProfile.should_receive(:find_or_create_by_user_id).with(3).and_return(profile)
+      profile.should_receive(:manager?).and_return(true)
+      user = mock_model(User)
+      user = User.new
+      user.should_receive(:id).and_return(3)
+      user.manager?.should be_true
+    end
+
+    it "should return true if the user's profile indicates they are" do
+      profile = mock("UserProfile")
+      UserProfile.should_receive(:find_or_create_by_user_id).with(3).and_return(profile)
+      profile.should_receive(:manager?).and_return(false)
+      user = mock_model(User)
+      user = User.new
+      user.should_receive(:id).and_return(3)
+      user.manager?.should be_false
+    end
+
+  end
+
   it "should provide a Hash of users keyed by user id" do
     user_1 = mock_model(User)
     user_2 = mock_model(User)

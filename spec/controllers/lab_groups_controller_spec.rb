@@ -120,18 +120,31 @@ describe LabGroupsController do
 
   describe "responding to POST create" do
 
+    before(:each) do
+      LabGroup.should_receive(:new).with({'these' => 'params'}).and_return(mock_lab_group)
+      LabGroupProfile.should_receive(:new).with({'those' => 'params'}).and_return(mock_lab_group_profile)
+    end
+
+    def do_post
+      post :create, :lab_group => {:these => 'params'}, :lab_group_profile => {:those => 'params'}
+    end
+
     describe "with valid params" do
 
+      before(:each) do
+        mock_lab_group.should_receive(:valid?).and_return(true)
+        mock_lab_group.should_receive(:save).and_return(true)
+        mock_lab_group_profile.should_receive(:lab_group_id=).with(mock_lab_group.id).and_return(true)
+        mock_lab_group_profile.should_receive(:save).and_return(true)
+      end
+
       it "should expose a newly created lab_group as @lab_group" do
-        LabGroup.should_receive(:new).with({'these' => 'params'}).and_return(mock_lab_group(:save => true))
-        LabGroupProfile.should_receive(:new).with({'those' => 'params'}).and_return(mock_lab_group(:save => true))
-        post :create, :lab_group => {:these => 'params'}, :lab_group_profile => {:those => 'params'}
+        do_post
         assigns(:lab_group).should equal(mock_lab_group)
       end
 
       it "should redirect to the created lab_group" do
-        LabGroup.stub!(:new).and_return(mock_lab_group(:save => true))
-        post :create, :lab_group => {}
+        do_post
         response.should redirect_to(lab_groups_url)
       end
 
@@ -140,14 +153,14 @@ describe LabGroupsController do
     describe "with invalid params" do
 
       it "should expose a newly created but unsaved lab_group as @lab_group" do
-        LabGroup.stub!(:new).with({'these' => 'params'}).and_return(mock_lab_group(:save => false))
-        post :create, :lab_group => {:these => 'params'}
+        mock_lab_group.should_receive(:valid?).and_return(false)
+        do_post
         assigns(:lab_group).should equal(mock_lab_group)
       end
 
       it "should re-render the 'new' template" do
-        LabGroup.stub!(:new).and_return(mock_lab_group(:save => false))
-        post :create, :lab_group => {}
+        mock_lab_group.should_receive(:valid?).and_return(false)
+        do_post
         response.should render_template('new')
       end
 
