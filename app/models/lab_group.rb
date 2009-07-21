@@ -29,6 +29,11 @@ class LabGroup < ActiveResource::Base
     return lab_group_hash
   end
 
+  def users
+    LabMembership.find(:all, :conditions => {:lab_group_id => self.id}).
+      collect {|x| x.user}
+  end
+
   ####################################################
   # API
   ####################################################
