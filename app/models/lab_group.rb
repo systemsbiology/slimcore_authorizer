@@ -30,7 +30,7 @@ class LabGroup < ActiveResource::Base
   end
 
   def users
-    LabMembership.find(:all, :conditions => {:lab_group_id => self.id}).
+    LabMembership.find_by_lab_group_id(self.id).
       collect {|x| x.user}
   end
 

@@ -21,4 +21,16 @@ describe "LabMembership" do
     lab_membership.should_receive(:user_id).and_return(3)
     lab_membership.user.should == user
   end
+
+  it "should find memberships by lab group id" do
+    lab_membership_1 = mock_model(LabMembership)
+    lab_membership_2 = mock_model(LabMembership)
+    LabMembership.should_receive(:find).with(
+      :all,
+      :params => { :lab_group_id => 13 }
+    ).and_return([lab_membership_1, lab_membership_2])
+
+    LabMembership.find_by_lab_group_id(13).should == [lab_membership_1, lab_membership_2]
+  end
+
 end

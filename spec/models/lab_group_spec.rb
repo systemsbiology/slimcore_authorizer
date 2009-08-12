@@ -100,14 +100,17 @@ describe "LabGroup" do
       :name => "Fungus Group",
       :updated_at => DateTime.now
     )
+    other_lab_group = LabGroup.new
     user_1 = mock_model(User, :lab_groups => [lab_group])
     user_2 = mock_model(User, :lab_groups => [lab_group])
+    user_3 = mock_model(User, :lab_groups => [other_lab_group])
 
     lab_membership_1 = LabMembership.new(:lab_group_id => lab_group.id, :user_id => user_1.id)
     lab_membership_2 = LabMembership.new(:lab_group_id => lab_group.id, :user_id => user_2.id)
+    lab_membership_3 = LabMembership.new(:lab_group_id => lab_group.id, :user_id => user_3.id)
 
-    LabMembership.should_receive(:find).
-      with(:all, :conditions => {:lab_group_id => lab_group.id}).
+    LabMembership.should_receive(:find_by_lab_group_id).
+      with(lab_group.id).
       and_return([lab_membership_1, lab_membership_2])
     User.should_receive(:find).with(user_1.id).and_return(user_1)
     User.should_receive(:find).with(user_2.id).and_return(user_2)
