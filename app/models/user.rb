@@ -92,6 +92,12 @@ class User < ActiveResource::Base
     return user_hash
   end
 
+  # need this to prevent this error for some associated models:
+  # NoMethodError: undefined method `destroyed?' for #<ActiveRecord::Associations::BelongsToAssociation:0x????????>
+  def destroyed?
+    false
+  end
+
   ####################################################
   # API
   ####################################################
