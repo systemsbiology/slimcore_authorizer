@@ -1,4 +1,6 @@
 class LabGroup < ActiveResource::Base
+  extend ApiAccessible
+
   self.site = APP_CONFIG['slimcore_site'] 
   self.user = APP_CONFIG['slimcore_user']
   self.password = APP_CONFIG['slimcore_password'] 
@@ -42,13 +44,25 @@ class LabGroup < ActiveResource::Base
   # API
   ####################################################
 
-  def summary_hash
-    return {
+  def summary_hash(with = nil)
+    hash = {
       :id => id,
       :name => name,
       :updated_at => updated_at,
       :uri => "#{APP_CONFIG['site_url']}/lab_groups/#{id}"
     }
+
+    if(with)
+      with.split(",").each do |key|
+        key = key.to_sym
+
+        if LabGroup.api_methods.include? key
+          hash[key] = self.send(key)
+        end
+      end
+    end
+
+    return hash
   end
 
   def detail_hash
@@ -59,6 +73,25 @@ class LabGroup < ActiveResource::Base
       :user_uris => user_ids.sort.
         collect {|x| "#{APP_CONFIG['site_url']}/users/#{x}" },
     }.merge(lab_group_profile.detail_hash)
+  end
+
+  api_reader :project_ids
+  def project_ids
+    projects = Project.find(:all, :conditions => {:lab_group_id => id})
+
+    return projects.collect {|p| p.id}
+  end
+
+  def self.populated_for_user(user)
+    all_lab_groups = LabGroup.find(:all, :order => "name ASC")
+
+    lab_group_ids = user.get_lab_group_ids
+
+    populated_lab_groups = all_lab_groups.select do |lab_group|
+      Sample.find(:all, :include => :project, :conditions => ["projects.lab_group_id = ?", lab_group.id]).size > 0
+    end
+
+    return populated_lab_groups
   end
 
 private

@@ -9,7 +9,7 @@ A lab_group can have and belong to users.
 
 class LabGroupsController < ApplicationController
   before_filter :login_required
-  before_filter :staff_or_admin_required
+  before_filter :staff_or_admin_required, :except => :index
 
 =begin rapidoc
 url:: /lab_groups
@@ -25,15 +25,19 @@ available when retrieving single lab_groups (see GET /lab_groups/[lab_group id])
 =end
 
   def index
-    @lab_groups = LabGroup.find(:all, :order => "name ASC")
+    if params[:populated_only]
+      @lab_groups = LabGroup.populated_for_user(current_user)
+    else
+      @lab_groups = LabGroup.find(:all, :order => "name ASC")
+    end
 
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @lab_groups.
-        collect{|x| x.summary_hash}
+        collect{|x| x.summary_hash(params[:with])}
       }
       format.json { render :json => @lab_groups.
-        collect{|x| x.summary_hash}.to_json
+        collect{|x| x.summary_hash(params[:with])}.to_json
       }
     end
   end
