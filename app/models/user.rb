@@ -36,6 +36,10 @@ class User < ActiveResource::Base
     UserProfile.find_or_create_by_user_id(id).manager?
   end
 
+  def investigator?
+    UserProfile.find_or_create_by_user_id(id).investigator?
+  end
+
   # Returns the full name of this user.
   def fullname
     full_name
