@@ -12,7 +12,6 @@ module Authorization
   end
   
   def manager_or_investigator_required
-    debugger
     APP_CONFIG['skip_authentication'] || current_user.manager? || current_user.investigator? || insufficient_privileges
   end
 
