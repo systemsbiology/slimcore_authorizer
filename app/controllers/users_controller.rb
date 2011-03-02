@@ -8,7 +8,7 @@ A user can have and belong to many lab groups.
 =end
 
 class UsersController < ApplicationController
-  before_filter :login_required, :only => [ :index, :show, :edit, :update, :destroy ]
+  before_filter :login_required, :only => [ :index, :current, :show, :edit, :update, :destroy ]
   before_filter :staff_or_admin_required, :only => [ :index, :show, :edit, :update, :destroy ]
   
   # render new.rhtml
@@ -80,6 +80,15 @@ Get detailed information about a single user.
     respond_to do |format|
       format.xml  { render :xml => @user.detail_hash }
       format.json  { render :json => @user.detail_hash }
+    end
+  end
+
+  def current
+    @user = current_user
+
+    respond_to do |format|
+      format.xml  { render :xml => [@user.detail_hash] }
+      format.json  { render :json => [@user.detail_hash] }
     end
   end
 
