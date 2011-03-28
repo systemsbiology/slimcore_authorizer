@@ -1,5 +1,8 @@
+require 'QAR'
+
 class LabGroup < ActiveResource::Base
   extend ApiAccessible
+  extend QAR
 
   self.site = APP_CONFIG['slimcore_site'] 
   self.user = APP_CONFIG['slimcore_user']
@@ -88,7 +91,8 @@ class LabGroup < ActiveResource::Base
     lab_group_ids = user.get_lab_group_ids
 
     populated_lab_groups = all_lab_groups.select do |lab_group|
-      Sample.find(:all, :include => :project, :conditions => ["projects.lab_group_id = ?", lab_group.id]).size > 0
+      Sample.find(:all, :include => {:microarray => {:chip => {:sample_set => :project}}},
+        :conditions => ["projects.lab_group_id = ?", lab_group.id]).size > 0
     end
 
     return populated_lab_groups

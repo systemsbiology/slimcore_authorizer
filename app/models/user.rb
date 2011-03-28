@@ -1,4 +1,8 @@
+require 'QAR'
+
 class User < ActiveResource::Base
+  extend QAR
+
   self.site = APP_CONFIG['slimcore_site'] 
   self.user = APP_CONFIG['slimcore_user']
   self.password = APP_CONFIG['slimcore_password'] 
@@ -91,6 +95,17 @@ class User < ActiveResource::Base
     user_hash = Hash.new
     user_array.each do |user|
       user_hash[user.id] = user
+    end
+
+    return user_hash
+  end
+
+  def self.all_by_login
+    user_array = User.find(:all)
+
+    user_hash = Hash.new
+    user_array.each do |user|
+      user_hash[user.login] = user
     end
 
     return user_hash
