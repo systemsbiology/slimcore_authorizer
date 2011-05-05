@@ -1,31 +1,14 @@
-require 'QAR'
-
-class LabGroup < ActiveResource::Base
+class LabGroup < ActiveRecord::Base
   extend ApiAccessible
-  extend QAR
 
-  self.site = APP_CONFIG['slimcore_site'] 
-  self.user = APP_CONFIG['slimcore_user']
-  self.password = APP_CONFIG['slimcore_password'] 
+  establish_connection "slimcore_#{Rails.env}"
+
+  has_many :lab_memberships
+  has_many :users, :through => :lab_memberships
 
   def lab_group_profile
     LabGroupProfile.find_or_create_by_lab_group_id(self.id)
   end
-
-  def self.find_by_name(name)
-    self.find(:all, :params => {:name => name}).first
-  end
-
-  def self.find_or_create_by_name(name)
-    find_by_name(name) || self.create(:name => name)
-  end
-
-  # destroy the associated lab group profile, which is responsible
-  # for destroying any application-specific associated records
-#  def destroy
-#    self.lab_group_profile.destroy
-#    super(destroy)
-#  end
 
   def self.all_by_id
     lab_group_array = LabGroup.find(:all)
@@ -36,11 +19,6 @@ class LabGroup < ActiveResource::Base
     end
 
     return lab_group_hash
-  end
-
-  def users
-    LabMembership.find_by_lab_group_id(self.id).
-      collect {|x| x.user}
   end
 
   ####################################################

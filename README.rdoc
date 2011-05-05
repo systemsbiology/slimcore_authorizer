@@ -4,7 +4,7 @@ This plugin/engine provides:
 
 1. Authentication through RubyCAS-server
 2. Very simple authorization by role
-3. Management of shared lab groups and users in SLIMcore
+3. Management of shared lab groups and users in a centralized database, SLIMcore
 
 A less complex alternative to SLIMcore Authorizer is the SLIMsolo Authorizer 
 (http://github.com/bmarzolf/slimsolo_authorizer), which handles authentication and user and
@@ -34,8 +34,24 @@ Then add this to your app/controllers/application_controller.rb:
   include AuthenticatedSystem 
   include Authorization
 
-Edit config/application.yml so that it correctly specifies the addresses of SLIMcore and your 
+Edit config/application.yml so that it correctly specifies the addresses of your 
 RubyCAS-server.
+
+Add the SLIMcore database configuration to your config/database.yml. Here's
+and example with SQLite 3:
+
+  slimcore_production:
+    adapter: sqlite3
+    database: db/slimcore_production.sqlite3
+
+  slimcore_development:
+    adapter: sqlite3
+    database: db/slimcore_development.sqlite3
+
+  slimcore_test:
+    adapter: sqlite3
+    database: db/slimcore_test.sqlite3
+
 
 Edit your application layout (typically app/views/layout/application.html.erb) to include the 
 following in the <head></head> section:
