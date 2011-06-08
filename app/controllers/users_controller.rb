@@ -104,7 +104,7 @@ Get detailed information about a single user.
     @user_profile = @user.user_profile
 
     respond_to do |format|
-      if @user.load(params[:user]) && @user.save &&
+      if @user.update_attributes(params[:user]) &&
          @user_profile.update_attributes(params[:user_profile])
         flash[:notice] = 'User was successfully updated.'
         format.html { redirect_to(users_url) }

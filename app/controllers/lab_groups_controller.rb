@@ -96,7 +96,7 @@ Get detailed information about a single lab_group.
     @lab_group_profile = @lab_group.lab_group_profile
 
     begin
-      if @lab_group.load(params[:lab_group]) && @lab_group.save &&
+      if @lab_group.update_attributes(params[:lab_group]) &&
          @lab_group_profile.update_attributes(params[:lab_group_profile])
         flash[:notice] = 'LabGroup was successfully updated.'
         redirect_to lab_groups_url

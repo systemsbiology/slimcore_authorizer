@@ -178,8 +178,7 @@ describe LabGroupsController do
 
       before(:each) do
         LabGroup.stub!(:find).and_return(mock_lab_group)
-        mock_lab_group.stub!(:load).and_return(true)
-        mock_lab_group.stub!(:save).and_return(true)
+        mock_lab_group.stub!(:update_attributes).and_return(true)
         mock_lab_group.stub!(:lab_group_profile).and_return(mock_lab_group_profile)
         mock_lab_group_profile.stub!(:update_attributes).and_return(true)
       end
@@ -194,13 +193,8 @@ describe LabGroupsController do
         do_update
       end
 
-      it "should load the updates into the lab_group" do
-        mock_lab_group.should_receive(:load).with({'these' => 'params'}).and_return(true)
-        do_update
-      end
-
-      it "should save the lab_group" do
-        mock_lab_group.should_receive(:save).and_return(true)
+      it "should update the lab_group" do
+        mock_lab_group.should_receive(:update_attributes).with({'these' => 'params'}).and_return(true)
         do_update
       end
 
@@ -231,12 +225,12 @@ describe LabGroupsController do
 
       before(:each) do
         LabGroup.stub!(:find).and_return(mock_lab_group)
-        mock_lab_group.stub!(:load).and_return(false)
+        mock_lab_group.stub!(:update_attributes).and_return(false)
         mock_lab_group.stub!(:lab_group_profile).and_return(mock_lab_group_profile)
       end
 
       it "should update the requested lab_group" do
-        mock_lab_group.should_receive(:load).with({'these' => 'params'})
+        mock_lab_group.should_receive(:update_attributes).with({'these' => 'params'})
         do_update
       end
 
