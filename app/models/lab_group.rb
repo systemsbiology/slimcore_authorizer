@@ -69,7 +69,7 @@ class LabGroup < ActiveRecord::Base
     lab_group_ids = user.get_lab_group_ids
 
     populated_lab_groups = all_lab_groups.select do |lab_group|
-      Sample.find(:all, :include => {:microarray => {:chip => {:sample_set => :project}}},
+      Sample.find(:all, :include => :project,
         :conditions => ["projects.lab_group_id = ?", lab_group.id]).size > 0
     end
 

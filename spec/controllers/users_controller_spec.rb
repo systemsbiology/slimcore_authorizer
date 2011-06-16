@@ -178,8 +178,7 @@ describe UsersController do
       
       before(:each) do
         User.stub!(:find).and_return(mock_user)
-        mock_user.stub!(:load).and_return(true)
-        mock_user.stub!(:save).and_return(true)
+        mock_user.stub!(:update_attributes).and_return(true)
         mock_user.stub!(:user_profile).and_return(mock_user_profile)
         mock_user_profile.stub!(:update_attributes).and_return(false)
       end
@@ -194,13 +193,8 @@ describe UsersController do
         do_update
       end
 
-      it "should load the updates into the user" do
-        mock_user.should_receive(:load).with({'these' => 'params'}).and_return(true)
-        do_update
-      end
-
-      it "should save the user" do
-        mock_user.should_receive(:save).and_return(true)
+      it "should update the user attributes" do
+        mock_user.should_receive(:update_attributes).with({'these' => 'params'}).and_return(true)
         do_update
       end
 
