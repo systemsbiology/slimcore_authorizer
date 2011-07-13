@@ -7,7 +7,7 @@ This plugin/engine provides:
 3. Management of shared lab groups and users in a centralized database, SLIMcore
 
 A less complex alternative to SLIMcore Authorizer is the SLIMsolo Authorizer 
-(http://github.com/bmarzolf/slimsolo_authorizer), which handles authentication and user and
+(http://github.com/systemsbiology/slimsolo_authorizer), which handles authentication and user and
 lab group storage within the parent application itself, but does not have the single sign-on 
 and shared users/lab groups between applications.
 
@@ -25,7 +25,7 @@ Then add this to your config/environment.rb as directed by the Engines instructi
 
 Install SLIMcore Authorizer:
 
-  script/plugin install git://github.com/bmarzolf/slimcore_authorizer.git
+  script/plugin install git://github.com/systemsbiology/slimcore_authorizer.git
   script/generate slimcore_authorizer .
   rake db:migrate
 
