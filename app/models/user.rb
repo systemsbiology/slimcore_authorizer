@@ -94,6 +94,34 @@ class User < ActiveRecord::Base
   end
 
   ####################################################
+  # Passwords
+  ####################################################
+  
+  validates_confirmation_of :password
+  
+  before_save :encrypt_password
+
+  attr_accessor :password, :password_confirmation
+
+  attr_accessible :login, :email, :firstname, :lastname,
+    :password, :password_confirmation
+
+  def encrypt(str)
+    generate_encryption_salt unless encryption_salt
+    Digest::SHA256.hexdigest("#{encryption_salt}::#{str}")
+  end
+
+  def encrypt_password
+    self[:encrypted_password] = encrypt(password)
+  end
+
+  def generate_encryption_salt
+    self.encryption_salt = Digest::SHA1.hexdigest(Crypt::ISAAC.new.rand(2**31).to_s) unless
+      encryption_salt
+  end
+
+
+  ####################################################
   # API
   ####################################################
   
