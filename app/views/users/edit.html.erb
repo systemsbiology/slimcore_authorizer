@@ -25,12 +25,12 @@
 
   <p>
     <b>Password</b><br />
-    <%= f.text_field :password %>
+    <%= f.password_field :password %>
   </p>
 
   <p>
     <b>Password Confirmation</b><br />
-    <%= f.text_field :password_confirmation %>
+    <%= f.password_field :password_confirmation %>
   </p>
 
   <%= render :partial => "user_profiles/form", :locals => {:user_profile => @user_profile} %>
